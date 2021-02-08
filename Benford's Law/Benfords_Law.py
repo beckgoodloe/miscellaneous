@@ -17,7 +17,7 @@ def benford_image():
     # Make a list of zeroes
     tally = [0] * 10
     # Load your image and convert to numpy
-    IMAGE_PATH = os.path.join(BASE_DIR, "sample.JPG")
+    IMAGE_PATH = os.path.join(BASE_DIR, "beck.jpeg")
     image = Image.open(IMAGE_PATH)
     data = asarray(image)
     # Iterate through each pixel and tally the first digit
