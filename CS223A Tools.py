@@ -34,15 +34,24 @@ def T_from_d_and_h(l):
 					 [np.sin(theta)*np.sin(alpha), np.cos(theta)*np.sin(alpha), np.cos(alpha), np.cos(alpha)*d],
 					 [0,0,0,1]))
 
-def symbolic_T_from_d_and_h():
-	alpha = Symbol("alpha")
-	a = Symbol("a")
-	d = Symbol("d")
-	theta = Symbol("theta")
-	return Matrix([[cos(theta), -sin(theta), 0, a],
+# Calculate Transformation matrix (T) given a row of d&h parameters [alpha(i-1), a(i-1), d(i), th(i)]
+# theta and alpha should be in radians
+def symbolic_T_from_d_and_h(l):
+	alpha, a, d, theta = l
+	if(isinstance(alpha, str)):
+		alpha = Symbol(alpha)
+	if(isinstance(a, str)):
+		a = Symbol(a)
+	if(isinstance(d, str)):
+		d = Symbol(d)
+	if(isinstance(theta, str)):
+		theta = Symbol(theta)
+
+	M = Matrix([[cos(theta), -sin(theta), 0, a],
 				   [sin(theta) * cos(alpha), cos(theta)*cos(alpha), -sin(alpha), -sin(alpha) * d],
 				   [sin(theta)*sin(alpha), cos(theta)*sin(alpha), cos(alpha), cos(alpha) * d],
 				   [0, 0, 0, 1]])
+	return M
 
 #######################################################################################################
 
@@ -93,6 +102,15 @@ def h3_p2c():
 
 	return np.dot(J, q_dot)
 
+def h4_p1a():
+	T10 = symbolic_T_from_d_and_h([0, 0, 0 ,'th1'])
+	T21 = symbolic_T_from_d_and_h([math.radians(90), 0, 'L1', 'th2'])
+	T32 = symbolic_T_from_d_and_h([math.radians(90), 0, 'd3', math.radians(90)])
+	T43 = symbolic_T_from_d_and_h([0, 'L2', 0, 0])
+	T40 = T10 * T21 * T32 * T43
+
+	return T40
+
 def main():
 	print("Hello World")
 
@@ -102,8 +120,14 @@ def main():
 	# ans = hw2_p1()
 	# ans = hw3_p1()
 	# ans = h3_p2c()
-	ans = symbolic_T_from_d_and_h()
-	print(ans)
+	l2 = Symbol("l2")
+	th1 = Symbol("th1")
+	th2 = Symbol("th2")
+	d3 = Symbol("d3")
+	M = Matrix([[l2 * cos(th1) - d3 * sin(th1) * sin(th2), d3 * cos(th1) * cos(th2), cos(th1) * sin(th2)],
+			    [l2 * sin(th1) + d3 * cos(th1) * sin(th2), d3 * sin(th1) * cos(th2), sin(th1) * sin(th2)],
+			    [0, d3 * sin(th2), -cos(th2)]])
+	print(M.det())
 
 
 
