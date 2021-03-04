@@ -1,33 +1,142 @@
 import odrive
+drive = None
 
 
-def find_arms():
-    arm1 = odrive.find_any()
-    return arm1
+def connect():
+    print("Connecting to driver...")
+    drive = odrive.find_any()
+    print("Successfully connected.")
 
 
-def main():
-    print("INITIALIZING")
-    arm = find_arms()
-    print("ARM FOUND")
-    while(True):
-    	command = input()
-    	args = command.split(" ")
-    	if args[0] == "print" and len(args) > 1:
-    		if args[1] == "voltage":
-    			print(arm.vbus_voltage)
-    		elif args[1] == "current":
-    			print(arm.axis0.motor.config.current_lim)
-    		else:
-    			print("INVALID COMMAND")
-
-    # print(od.axis0)
-    # print(axis.motor)
-    # print(axis.encoder)
+def full_calibration(d=drive):
+    print("Starting calibration...")
+    d.axis0.requested_state = AXIS_STATE_ENCODER_OFFSET_CALIBRATION
+    print("Calibration complete.")
 
 
-if __name__ == '__main__':
-    main()
+def check_voltage(d=drive):
+    print(d.vbus_voltage)
+
+
+def current_limit(d=drive):
+    print(d.axis0.motor.config.current_lim)
+
+
+def get_velocity_limit(d=drive):
+    print(d.axis0.controller.config.vel_limit)
+
+
+def set_velocity_limit(val, d=drive):
+    d.axis0.controller.config.vel_limit = val
+    print("Velocity limit has been set to {} turns/sec.").format(val)
+
+
+def get_calibration_current(d=drive):
+    print(d.axis0.motor.config.calibration_current)
+
+
+def set_calibration_current(val, d=drive):
+    d.axis0.motor.config.calibration_current = val
+    print("Calibration current has been set to {} A").format(val)
+
+
+def get_brake_resistance(d=drive):
+    print(d.config.brake_resistance)
+
+
+def set_brake_resistance(val, d=drive):
+    d.config.brake_resistance = val
+    print("Brake resistance set to {} Ohms.").format(val)
+
+
+def get_torque_constant(d=drive):
+    print(d.axis0.motor.config.torque_constant)
+    print("Default value is 8.27.")
+
+
+def set_torque_constant(val, d=drive):
+    d.axis0.motor.config.torque_constant = val
+    print("Torque constant set to {}.").format(val)
+    print("Default value is 8.27.")
+
+
+    # arm = find_arms()
+    # print("ARM FOUND")
+    # while(True):
+    #     command = input()
+    #     args = command.split(" ")
+    #     if args[0] == "print" and len(args) > 1:
+    #         if args[1] == "voltage":
+    #             print(arm.vbus_voltage)
+    #         elif args[1] == "current":
+    #             print(arm.axis0.motor.config.current_lim)
+    #         else:
+    #             print("INVALID COMMAND")
+
+
+def get_encoder_counts(d=drive):
+    print(d.axis0.encoder.config.cpr)
+
+
+def set_encoder_counts(val, d=drive):
+    d.axis0.encoder.config.cpr = val
+    print("Encoder count set to {} counts/rev").format(val)
+
+
+def shadow_count(d=drive):
+    print(d.axis0.encoder.shadow_count)
+
+
+def get_axis_state(d=drive):
+    print("Current state is", d.axis0.current_state)
+    print("\n1 --> idle\n3 --> full calibration\n8 --> closed loop ")
+
+
+def set_axis_state(val, d=drive):
+    d.axis0.requested_state = val
+    print("Axis state set to", val)
+    print("\n1 --> idle\n3 --> full calibration\n8 --> closed loop ")
+
+
+def get_control_mode(d=drive):
+    print(d.axis0.controller.config.control_mode)
+    print("\n1 --> torque control\n2 --> velocity control\n3 --> position control")
+
+
+def set_control_mode(val, d=drive):
+    d.axis0.controller.config.control_mode = val
+    print("Control mode has been set to", val)
+    print("\n1 --> torque control\n2 --> velocity control\n3 --> position control")
+
+
+def get_input_mode(d=drive):
+    print(d.axis0.controller.config.input_mode)
+    print("\n0 --> inactive\n1 --> pass through\n3 --> 2nd order position filter")
+
+
+def set_input_mode(val, d=drive):
+    d.axis0.controller.config.input_mode = val
+    print("Input mode has been set to", val)
+    print("\n0 --> inactive\n1 --> pass through\n3 --> 2nd order position filter")
+
+
+def command_velocity(val, d=drive):
+    d.axis0.controller.input_vel = val
+    print("Velocity commanded to {} turns/sec.").format(val)
+
+
+def command_position(val, d=drive):
+    d.axis0.controller.input_pos = val
+    print("Position commanded to {}.").format(val)
+
+
+def errors(d=drive):
+    odrive.dump_errors(d)
+
+
+def clear_errors(d=drive):
+    odrive.dump_errors(odrv0, True)
+
 
 # Check motor voltage
 # odrv0.vbus_voltage
