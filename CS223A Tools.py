@@ -111,6 +111,25 @@ def h4_p1a():
 
 	return T40
 
+def h6_p1():
+	# a01 a11 a21 a31 a02 a12 a22 a32 b01 b11 b21 b31 b02 b12 b22 b32
+	A = np.array([[],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  [],
+				  []])
+
 def main():
 	print("Hello World")
 
