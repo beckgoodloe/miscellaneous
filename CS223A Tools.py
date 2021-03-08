@@ -251,9 +251,12 @@ def h6_p1():
         x.append(temp[0])
         y.append(temp[1])
 
-    plt.ylim(0, 10)
-    plt.xlim(0, 10)
-    plt.axis('equal')
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    plt.ylim(0, 10.1)
+    plt.xlim(0, 10.1)
+    # plt.axis('equal')
 
     circle1 = plt.Circle((2.5, 7.5), 2.5, color='b', fill=False)
     circle2 = plt.Circle((7.5, 2.5), 2.5, color='r', fill=False)
@@ -261,11 +264,42 @@ def h6_p1():
     plt.gca().add_patch(circle1)
     plt.gca().add_patch(circle2)
 
-    plt.grid(color='black', which='major', linestyle='-', linewidth=.5)
-    plt.grid(color='grey', which='minor', linestyle='--', linewidth=.5)
+    major_ticks = np.arange(0, 10.1, 1)
+    minor_ticks = np.arange(0, 10.2, .2)
+
+    ax.set_xticks(major_ticks)
+    ax.set_xticks(minor_ticks, minor=True)
+    ax.set_yticks(major_ticks)
+    ax.set_yticks(minor_ticks, minor=True)
+
+    plt.grid(color='lightgrey', which='major', linestyle='-', linewidth=.5)
+    plt.grid(color='lightgrey', which='minor', linestyle='--', linewidth=.5)
 
     plt.plot(x, y)
-    plt.show()
+
+    x_1 = [5, 4]
+    y_1 = [10, 1]
+    plt.scatter(x_1, y_1, c='red')
+
+    # plt.show()
+
+    # plt.clf()
+
+    # time = np.linspace(0, 6, 2 * resolution)
+
+    # fig, axs = plt.subplots(2)
+    # fig.suptitle('X and Y Trajectories')
+    # axs[0].plot(time, x)
+    # axs[1].plot(time, y)
+
+    # axs[1].set_xlabel("Time")
+
+    # axs[0].set_ylabel("X Position")
+    # axs[1].set_ylabel("Y Position")
+
+    # plt.show()
+
+
 
 
 
