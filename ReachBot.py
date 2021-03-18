@@ -201,3 +201,16 @@ odrv0.axis0.controller.config.input_mode = 1
 odrv0.axis0.controller.config.control_mode = 3
 odrv0.axis0.requested_state = 8
 odrv0.axis0.controller.input_pos = 0
+
+odrv0.axis0.requested_state=1
+
+
+odrv0.axis0.controller.config.pos_gain = 20.0
+odrv0.axis0.controller.config.vel_gain = 0.16
+odrv0.axis0.controller.config.vel_integrator_gain = 0.32
+
+start_liveplotter(lambda:[odrv0.axis0.encoder.pos_estimate, odrv0.axis0.controller.pos_setpoint])
+
+odrv0.save_configuration()
+
+controller.start_anticogging_calibration()
